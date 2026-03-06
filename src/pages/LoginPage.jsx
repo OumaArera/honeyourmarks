@@ -6,6 +6,7 @@ import LoginForm from "../components/login/LoginForm";
 import ForgotForm from '../components/login/ForgotPassword'
 import RegisterFlow  from "../components/login/Register";
 import { MODES } from "../components/login/constants";
+import WhatsAppSupportButton from "../components/login/WhatsAppSupportButton";
 
 // ─── LoginPage ────────────────────────────────────────────────────────────────
 export default function LoginPage() {
@@ -56,6 +57,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <WhatsAppSupportButton /> 
     </>
   );
 }

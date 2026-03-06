@@ -4,8 +4,9 @@ const buildHeaders = (isTokenRequired) => {
         "Content-Type": "application/json",
     };
 
+
     if (isTokenRequired) {
-        const token = localStorage.getItem("accessToken");
+        const token = localStorage.getItem("hym_access");
         if (token) {
             headers["Authorization"] = `Bearer ${token}`;
         }
@@ -68,7 +69,7 @@ export const createData = async (endpoint, newData, isTokenRequired = true) => {
 
         const data = await response.json();
         if (!response.ok) {
-            return { error: data?.error || data?.errors || "Failed to create data" };
+            return { error: data?.error || data?.errors || data|| "Failed to create data" };
         }
 
         return data;
@@ -100,7 +101,7 @@ export const authMethod = async (endpoint, newData) => {
     }
 };
 
-export const getData = async (endpoint, isTokenRequired = false) => {
+export const getData = async (endpoint, isTokenRequired = true) => {
     const completeURL = `${BASE_URL}/${endpoint}`;
     try {
         const response = await fetch(completeURL, {

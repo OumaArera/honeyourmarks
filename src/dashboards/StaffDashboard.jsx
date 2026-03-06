@@ -6,11 +6,11 @@ import BottomNav from "../components/teachers/BottomNav";
 import OverviewTab from "../components/teachers/OverviewTab";
 import GroupsTab from "../components/teachers/GroupsTab";
 import StudentsTab from "../components/teachers/StudentsTab";
-import ExercisesTab from "../components/teachers/ExercisesTab";
 import ExamsTab from "../components/teachers/ExamsTab";
 import ClassesTab from "../components/teachers/ClassesTab";
 import MarkingTab from "../components/teachers/MarkingTab";
 import { useAuth } from "../hooks/useAuth";
+import NotesTab from "../components/teachers/NotesTab";
 
 
 export default function TeacherDashboard() {
@@ -29,7 +29,7 @@ export default function TeacherDashboard() {
     overview: OverviewTab,
     groups: GroupsTab,
     students: StudentsTab,
-    notes: ExercisesTab,
+    notes: NotesTab,
     exams: ExamsTab,
     classes: ClassesTab,
     marking: MarkingTab,

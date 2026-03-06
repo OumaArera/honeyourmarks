@@ -1,63 +1,129 @@
-import { useState } from "react";
-import { EXAMS } from "../../data/teacher.dashboard.data";
-import Badge from "../../components/teachers/Badge";
-import SectionTitle from "./SectionTitle";
-import LevelTag from "./LevelTag";
+import { useEffect, useMemo, useState } from "react";
+import { getData } from "../../api/api.service";
+import { getAuthorId } from "../../utils/notes.utils";
+import Toast from "../common/Toast";
+import ExamCreateView from "../exams/ExamCreateView";
+import ExamBrowseView from "../exams/ExamBrowseView";
+import ExamStatsView from "../exams/ExamStatsView";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ── Constants
+// ─────────────────────────────────────────────────────────────────────────────
+
+const VIEWS = { CREATE: "create", BROWSE: "browse", STATS: "stats" };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ── ViewTab
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ViewTab({ label, icon, active, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black transition-all duration-150"
+      style={
+        active
+          ? {
+              background: "linear-gradient(135deg,#1D4ED8,#3B82F6)",
+              color: "#fff",
+              boxShadow: "0 4px 16px rgba(29,78,216,0.35)",
+            }
+          : {
+              background: "rgba(255,255,255,0.04)",
+              color: "rgba(255,255,255,0.4)",
+              border: "1px solid rgba(255,255,255,0.07)",
+            }
+      }
+    >
+      <span>{icon}</span> {label}
+    </button>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ── ExamsTab
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function ExamsTab() {
+  const [view, setView] = useState(VIEWS.CREATE);
+  const [subjectTags, setSubjectTags] = useState([]);
+  const [loadingTags, setLoadingTags] = useState(true);
+  const [toast, setToast] = useState(null);
+
+  const userId = useMemo(() => getAuthorId(), []);
+  const [teacherId, setTeacherId] = useState(null);
+
+  // Resolve teacher profile
+  useEffect(() => {
+    if (!userId) return;
+    (async () => {
+      try {
+        const res = await getData(`teachers/?user_id=${userId}`);
+        if (res?.error) throw new Error(res.error);
+        const teacher = res?.results?.[0];
+        if (!teacher) throw new Error("Teacher profile not found for this account.");
+        setTeacherId(teacher.id);
+      } catch (err) {
+        setToast({ type: "error", title: "Profile error", message: err.message });
+      }
+    })();
+  }, [userId]);
+
+  // Load subject tags
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getData("subject-tags/");
+        if (res?.error) throw new Error(res.error);
+        setSubjectTags(res?.results ?? []);
+      } catch (err) {
+        setToast({ type: "error", title: "Couldn't load subject tags", message: err.message });
+      } finally {
+        setLoadingTags(false);
+      }
+    })();
+  }, []);
+
+  const notify = (type, title, message) => setToast({ type, title, message });
+
   return (
-    <div className="space-y-6">
-      <SectionTitle icon="◈" title="Exams" subtitle="Scout · Explorer · Legend tiers" action="+ Create Exam" color="#B45309" />
+    <>
+      <Toast toast={toast} onDismiss={() => setToast(null)} />
 
-      <div className="space-y-4">
-        {EXAMS.map(e => (
-          <div key={e.id} className="rounded-2xl overflow-hidden"
-            style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${e.color}30` }}>
-            <div className="h-0.5 w-full" style={{ background: `linear-gradient(90deg,${e.color},transparent)` }} />
-            <div className="p-5">
-              <div className="flex items-start justify-between gap-3 mb-4">
-                <div>
-                  <h3 className="font-black text-white text-base">{e.title}</h3>
-                  <div className="flex flex-wrap gap-1.5 mt-1.5">
-                    <Badge color={e.color}>{e.subject}</Badge>
-                    <Badge color="#718096">{e.grade}</Badge>
-                    <LevelTag level={e.level} />
-                  </div>
-                </div>
-                <span className="text-[10px] font-black px-2.5 py-1 rounded-full shrink-0"
-                  style={e.published
-                    ? { background: "rgba(13,148,136,0.15)", color: "#2DD4BF", border: "1px solid rgba(13,148,136,0.3)" }
-                    : { background: "rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.12)" }}>
-                  {e.published ? "● Published" : "○ Draft"}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 rounded-xl text-center" style={{ background: "rgba(255,255,255,0.03)" }}>
-                  <p className="font-black text-white text-xl">{e.attempts}</p>
-                  <p className="text-white/30 text-[10px] mt-0.5">Attempts</p>
-                </div>
-                <div className="p-3 rounded-xl text-center" style={{ background: "rgba(255,255,255,0.03)" }}>
-                  <p className="font-black text-xl" style={{ color: e.color }}>{e.avgScore}%</p>
-                  <p className="text-white/30 text-[10px] mt-0.5">Avg Score</p>
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                {["Edit", "Results", e.published ? "Unpublish" : "Publish"].map(a => (
-                  <button key={a} className="flex-1 py-2 rounded-xl text-[11px] font-black transition-all hover:opacity-80"
-                    style={a === "Publish" || a === "Unpublish"
-                      ? { background: `${e.color}20`, color: e.color, border: `1px solid ${e.color}40` }
-                      : { background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.09)" }}>
-                    {a}
-                  </button>
-                ))}
-              </div>
+      <div className="space-y-6 pb-10">
+        <div className="space-y-4">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h2 className="text-2xl font-black text-white tracking-tight">📝 Exams Centre</h2>
+              <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>
+                Create, browse, and track examination questions
+              </p>
             </div>
           </div>
-        ))}
+
+          <div className="flex gap-2 flex-wrap">
+            <ViewTab icon="✍️" label="Create Exam"   active={view === VIEWS.CREATE} onClick={() => setView(VIEWS.CREATE)} />
+            <ViewTab icon="🔍" label="Browse Exams"  active={view === VIEWS.BROWSE} onClick={() => setView(VIEWS.BROWSE)} />
+            <ViewTab icon="📊" label="Exam Stats"    active={view === VIEWS.STATS}  onClick={() => setView(VIEWS.STATS)} />
+          </div>
+        </div>
+
+        {view === VIEWS.CREATE && (
+          <ExamCreateView
+            subjectTags={subjectTags}
+            loadingTags={loadingTags}
+            teacherId={teacherId}
+            onSuccess={(msg) => notify("success", "Exam published!", msg)}
+            onError={(msg) => notify("error", "Failed to save exam", msg)}
+          />
+        )}
+
+        {view === VIEWS.BROWSE && (
+          <ExamBrowseView subjectTags={subjectTags} />
+        )}
+
+        {view === VIEWS.STATS && <ExamStatsView />}
       </div>
-    </div>
+    </>
   );
 }

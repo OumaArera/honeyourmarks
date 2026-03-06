@@ -27,5 +27,5 @@ export const KE_COUNTIES = [
 export const SCHOOL_LEVELS = [
   "Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6",
   "Grade 7 (JSS 1)","Grade 8 (JSS 2)","Grade 9 (JSS 3)",
-  "Form 1","Form 2","Form 3","Form 4",
+  "Grade 10 (Senior 1)", "Grade 11 (Senior 2)", "Grade 12 (Senior 3)", "Form 3","Form 4",
 ];

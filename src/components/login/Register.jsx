@@ -1,84 +1,81 @@
 import { useState } from "react";
 import { REG_STEPS, MODES } from "./constants";
-import ParentStep   from "./ParentStep";
-import StudentStep  from "./StudentStep";
-import ConfirmStep  from "./ConfirmStep";
+import StudentStep from "./StudentStep";
+import ConfirmStep from "./ConfirmStep";
+import { authMethod } from "../../api/api.service";
 
-// ─── Default state factories ───────────────────────────────────────────────────
-const defaultParent = () => ({
-  firstName: "", lastName: "", idNumber: "",
-  phone: "", email: "", dateOfBirth: "",
-});
-
+// ─── Default state ─────────────────────────────────────────────────────────
 const defaultStudent = () => ({
-  firstName: "", middleNames: "", lastName: "",
-  sex: "", dateOfBirth: "", county: "",
-  schoolName: "", schoolLevel: "", parentalConsent: false,
+  first_name: "", middle_names: "", last_name: "",
+  sex: "", date_of_birth: "", county: "",
+  school_name: "", current_school_level: "",
+  phone_number: "", parental_consent: false,
 });
 
-// ─── RegisterFlow ─────────────────────────────────────────────────────────────
+// ─── RegisterFlow ──────────────────────────────────────────────────────────
 export default function RegisterFlow({ onSwitchMode }) {
-  const [step,        setStep]        = useState(REG_STEPS.PARENT);
-  const [parentData,  setParentData]  = useState(defaultParent());
-  const [studentData, setStudentData] = useState(defaultStudent());
-  const [alert,       setAlert]       = useState(null);
-  const [loading,     setLoading]     = useState(false);
+  const [step,          setStep]          = useState(REG_STEPS.STUDENT);
+  const [studentData,   setStudentData]   = useState(defaultStudent());
+  const [registeredStudent, setRegisteredStudent] = useState(null);
+  const [alert,         setAlert]         = useState(null);
+  const [loading,       setLoading]       = useState(false);
 
-  // ── Step navigation ───────────────────────────────────────────────────────
-  const goToStudent = () => {
-    setAlert(null);
-    setStep(REG_STEPS.STUDENT);
-  };
-
-  const goBackToParent = () => {
-    setAlert(null);
-    setStep(REG_STEPS.PARENT);
-  };
-
-  // ── Final submission ──────────────────────────────────────────────────────
-  const handleFinalSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
-    // TODO: replace with real API call
-    // POST /api/auth/register/ with { parent: parentData, student: studentData }
-    setTimeout(() => {
-      setLoading(false);
+    setAlert(null);
+    try {
+      const payload = {
+        first_name:           studentData.first_name,
+        last_name:            studentData.last_name,
+        sex:                  studentData.sex.toLowerCase(),
+        date_of_birth:        studentData.date_of_birth,
+        phone_number:         studentData.phone_number,
+        school_name:          studentData.school_name,
+        county:               studentData.county,
+        current_school_level: studentData.current_school_level,
+        parental_consent:     studentData.parental_consent,
+        ...(studentData.middle_names && { middle_names: studentData.middle_names }),
+      };
+
+      const response = await authMethod("students/", payload);
+      console.log("Respon")
+      setRegisteredStudent(response);
       setStep(REG_STEPS.CONFIRM);
-    }, 1800);
+    } catch (err) {
+      const data = err?.response?.data;
+      // Flatten first API error message found
+      const msg = data
+        ? Object.values(data).flat()[0]
+        : "Registration failed. Please try again.";
+      setAlert({ type: "error", msg });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      {step === REG_STEPS.PARENT && (
-        <ParentStep
-          data={parentData}
-          onChange={setParentData}
-          onNext={goToStudent}
-          alert={alert}
-          setAlert={setAlert}
-        />
-      )}
-
       {step === REG_STEPS.STUDENT && (
         <StudentStep
           data={studentData}
           onChange={setStudentData}
-          onNext={handleFinalSubmit}
-          onBack={goBackToParent}
+          onNext={handleSubmit}
           alert={alert}
           setAlert={setAlert}
           loading={loading}
         />
       )}
 
-      {step === REG_STEPS.CONFIRM && (
-        <ConfirmStep studentData={studentData} />
+      {step === REG_STEPS.CONFIRM && registeredStudent && (
+        <ConfirmStep student={registeredStudent} />
       )}
 
-      {/* Switch back to login (only on step 0 or 1) */}
-      {step !== REG_STEPS.CONFIRM && (
+      {step === REG_STEPS.STUDENT && (
         <div className="switch-row">
-          Already have an account?
-          <button className="switch-btn" onClick={() => onSwitchMode(MODES.LOGIN)}>Sign in</button>
+          Already have an account?{" "}
+          <button className="switch-btn" onClick={() => onSwitchMode(MODES.LOGIN)}>
+            Sign in
+          </button>
         </div>
       )}
     </>

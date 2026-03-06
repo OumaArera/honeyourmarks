@@ -1,0 +1,199 @@
+/* ── Auth Loader ─────────────────────────────────────────────────────────── */
+.auth-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--bg, #0f0f13);
+}
+.auth-loader-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: #6C63FF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Dashboard Root ──────────────────────────────────────────────────────── */
+.dash-root {
+  display: flex;
+  min-height: 100vh;
+  background: #0f0f13;
+  color: #e8e8f0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+.dash-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: #16161d;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  gap: 8px;
+}
+.dash-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 24px;
+}
+.dash-sidebar-logo  { width: 28px; height: 28px; object-fit: contain; }
+.dash-sidebar-name  { font-weight: 700; font-size: 1rem; letter-spacing: 0.04em; }
+.dash-nav           { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.dash-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  text-align: left;
+  width: 100%;
+}
+.dash-nav-item:hover { background: rgba(255,255,255,0.05); color: #e8e8f0; }
+.dash-nav-item.active { background: rgba(108, 99, 255, 0.15); color: #6C63FF; }
+.dash-logout-btn {
+  margin-top: auto;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  color: #666;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.dash-logout-btn:hover { border-color: #FF6584; color: #FF6584; }
+
+/* ── Main ────────────────────────────────────────────────────────────────── */
+.dash-main    { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.dash-header  {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.dash-header-title    { font-size: 1rem; font-weight: 600; color: #aaa; }
+.dash-header-user     { display: flex; align-items: center; gap: 12px; }
+.dash-header-username { font-size: 0.85rem; color: #888; }
+.dash-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6C63FF, #FF6584);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem;
+}
+
+.dash-content { padding: 32px; overflow-y: auto; }
+
+/* ── Welcome banner ──────────────────────────────────────────────────────── */
+.dash-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.dash-welcome-label { font-size: 0.85rem; color: #666; margin-bottom: 4px; }
+.dash-welcome-name  { font-size: 1.6rem; font-weight: 700; }
+.dash-welcome-badge {
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.student-badge { background: rgba(108, 99, 255, 0.15); color: #6C63FF; }
+.staff-badge   { background: rgba(67, 198, 172, 0.15); color: #43C6AC; }
+
+/* ── Stats grid ──────────────────────────────────────────────────────────── */
+.dash-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.dash-stat-card {
+  background: #16161d;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.2s;
+}
+.dash-stat-card:hover { border-color: rgba(108,99,255,0.3); }
+.dash-stat-icon  { font-size: 1.4rem; }
+.dash-stat-value { font-size: 1.8rem; font-weight: 700; line-height: 1; }
+.dash-stat-label { font-size: 0.78rem; color: #666; }
+
+/* ── Section ─────────────────────────────────────────────────────────────── */
+.dash-section       { margin-top: 8px; }
+.dash-section-title { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: #ccc; }
+
+/* ── Courses list (student) ──────────────────────────────────────────────── */
+.dash-courses-list  { display: flex; flex-direction: column; gap: 12px; }
+.dash-course-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #16161d;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+.dash-course-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dash-course-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.dash-course-name { font-size: 0.9rem; font-weight: 500; }
+.dash-progress-bar {
+  height: 4px; border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.dash-progress-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+.dash-course-pct  { font-size: 0.78rem; color: #888; flex-shrink: 0; }
+
+/* ── Schedule list (staff) ───────────────────────────────────────────────── */
+.dash-schedule-list { display: flex; flex-direction: column; gap: 10px; }
+.dash-class-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #16161d;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+.dash-class-time     { font-size: 0.82rem; color: #43C6AC; font-weight: 600; flex-shrink: 0; width: 44px; }
+.dash-class-info     { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.dash-class-name     { font-size: 0.9rem; font-weight: 500; }
+.dash-class-students { font-size: 0.78rem; color: #666; }
+.dash-class-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: #aaa;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.dash-class-btn:hover { border-color: #43C6AC; color: #43C6AC; }
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dash-sidebar { display: none; }
+  .dash-content { padding: 20px; }
+  .dash-welcome { flex-direction: column; align-items: flex-start; gap: 12px; }
+}

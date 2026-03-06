@@ -1,90 +1,99 @@
 import { Stepper } from "../common/UI";
 import { REG_STEPS } from "./constants";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-/** Generate a mock admission number: HYM-YYYY-XXXX */
-function generateAdmissionNumber() {
-  const year = new Date().getFullYear();
-  const seq  = String(Math.floor(1000 + Math.random() * 9000));
-  return `HYM-${year}-${seq}`;
-}
+// ─── Helpers ───────────────────────────────────────────────────────────────
 
 /**
- * Default password = DOB without hyphens.
- * e.g. 2010-03-15 → 20100315
+ * Converts ISO date (YYYY-MM-DD) → DDMMYYYY (no hyphens).
+ * e.g. "2008-05-12" → "12052008"
  */
 function dobToPassword(dateOfBirth) {
-  return dateOfBirth.replace(/-/g, "");
+  if (!dateOfBirth) return "";
+  const [yyyy, mm, dd] = dateOfBirth.split("-");
+  return `${dd}${mm}${yyyy}`;
 }
 
-// ─── ConfirmStep ──────────────────────────────────────────────────────────────
-export default function ConfirmStep({ studentData }) {
-  const admissionNumber = generateAdmissionNumber();
-  const defaultPassword = dobToPassword(studentData.dateOfBirth);
+// ─── ConfirmStep ───────────────────────────────────────────────────────────
+// Receives the real API response object as `student`
+export default function ConfirmStep({ student }) {
+  const {
+    first_name, middle_names, last_name,
+    admission_number, date_of_birth,
+    school_name, county, current_school_level,
+  } = student;
 
-  const fullName = [studentData.firstName, studentData.middleNames, studentData.lastName]
-    .filter(Boolean).join(" ");
+  const fullName     = [first_name, middle_names, last_name].filter(Boolean).join(" ");
+  const defaultPassword = dobToPassword(date_of_birth);
 
   return (
     <>
       <Stepper step={REG_STEPS.CONFIRM} />
 
       <div className="accent-line" />
-      <h1 className="form-heading">You're <em>in!</em></h1>
+      <h1 className="form-heading">Welcome, <em>{first_name}!</em> 🎉</h1>
       <p className="form-subheading">
-        Registration complete. Your teacher-admin will confirm access shortly.
-        Save your login credentials below.
+        Congratulations on joining <strong>Hone Your Marks</strong>! Your account has been
+        created successfully. Save your credentials below — take a screenshot before you leave.
       </p>
 
-      {/* Credential reveal */}
+      {/* Credential card */}
       <div className="cred-box">
         <div className="cred-box-title">🎓 Your Login Credentials</div>
 
-        <div className="cred-row">
-          <span className="cred-key">Name</span>
-          <span className="cred-val" style={{ fontSize: 14 }}>{fullName}</span>
-        </div>
-        <div className="cred-row">
-          <span className="cred-key">Username</span>
-          <span className="cred-val">{admissionNumber}</span>
-        </div>
-        <div className="cred-row">
-          <span className="cred-key">Password</span>
-          <span className="cred-val" style={{ letterSpacing: "0.1em" }}>{defaultPassword}</span>
-        </div>
+        <CredRow label="Full name"  value={fullName} />
+        <CredRow label="Username"   value={admission_number} highlight />
+        <CredRow label="Password"   value={defaultPassword}  highlight mono />
 
         <p className="cred-note">
-          📌 Your username is your <strong style={{ color: "rgba(253,248,242,0.7)" }}>admission number</strong>.
-          Your default password is your <strong style={{ color: "rgba(253,248,242,0.7)" }}>date of birth</strong> (YYYYMMDD).
-          Please change it after your first login.
+          📸 <strong>Take a screenshot now.</strong> Your username is your{" "}
+          <strong style={{ color: "rgba(253,248,242,0.75)" }}>admission number</strong> and
+          your default password is your{" "}
+          <strong style={{ color: "rgba(253,248,242,0.75)" }}>date of birth</strong> in{" "}
+          <strong style={{ color: "rgba(253,248,242,0.75)" }}>DDMMYYYY</strong> format.
+          Change your password after your first login.
         </p>
       </div>
 
-      {/* Summary */}
-      <div style={{ marginBottom: 20, padding: "14px 16px", background: "rgba(253,248,242,0.04)", border: "1px solid rgba(253,248,242,0.08)", borderRadius: 2 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(253,248,242,0.3)", marginBottom: 10 }}>
-          Registered details
-        </div>
+      {/* Registration summary */}
+      <div className="cred-summary">
+        <div className="cred-summary-title">Registered details</div>
         {[
-          ["School",  studentData.schoolName],
-          ["Level",   studentData.schoolLevel],
-          ["County",  studentData.county],
+          ["School",  school_name],
+          ["Level",   current_school_level],
+          ["County",  county],
         ].map(([k, v]) => (
-          <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderTop: "1px solid rgba(253,248,242,0.06)" }}>
-            <span style={{ fontSize: 12, color: "rgba(253,248,242,0.35)", fontWeight: 500 }}>{k}</span>
-            <span style={{ fontSize: 12.5, color: "rgba(253,248,242,0.75)" }}>{v}</span>
+          <div key={k} className="cred-summary-row">
+            <span className="cred-summary-key">{k}</span>
+            <span className="cred-summary-val">{v}</span>
           </div>
         ))}
       </div>
 
       <button
         className="btn-submit"
-        style={{ cursor: "pointer", border: "none" }}
-        onClick={() => window.location.href = "/login"}
+        style={{ cursor: "pointer", border: "none", marginTop: 8 }}
+        onClick={() => (window.location.href = "/login")}
       >
         Go to Sign In →
       </button>
     </>
+  );
+}
+
+// ─── CredRow ───────────────────────────────────────────────────────────────
+function CredRow({ label, value, highlight, mono }) {
+  return (
+    <div className="cred-row">
+      <span className="cred-key">{label}</span>
+      <span
+        className="cred-val"
+        style={{
+          ...(highlight && { color: "#fff", fontWeight: 600 }),
+          ...(mono && { letterSpacing: "0.12em", fontFamily: "monospace" }),
+        }}
+      >
+        {value}
+      </span>
+    </div>
   );
 }

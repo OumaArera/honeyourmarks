@@ -1,38 +1,36 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
+import { AuthProvider } from "./context/AuthContext";
+import PrivateRoute from "./context/PrivateRoute";
+import StudentDashboard from './dashboards/StudentDashboard'
+import TeacherDashboard from './dashboards/StaffDashboard';
 
 function App() {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        {/* <Header /> */}
-        <main className="grow pt-0">
-          <Routes>
-            {/* Define routes here */}
-            
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            {/* <Route path="/blogs/:id" element={<BlogDetails />} /> */}
-            {/* <Route path="/give" element={<Give />} /> */}
-            {/* <Route path="/contact" element={<Contact />} /> */}
-            {/* <Route path="/join" element={<Join />} /> */}
-            {/* <Route path="/about" element={<About />} /> */}
-            {/* <Route path="/about/mission" element={<Mission />} /> */}
-            {/* <Route path="/about/vision" element={<Vision />} /> */}
-            {/* <Route path="/about/leadership" element={<Leadership />} /> */}
-            {/* <Route path="/programs" element={<Programs />} /> */}
-            {/* <Route path="/events" element={<Events />} /> */}
-            {/* <Route path="/prayer" element={<PrayerWall />} /> */}
-            {/* <Route path="/discipleship" element={<Discipleship />} /> */}
-            {/* <Route path="/privacy" element={<PrivacyPolicy />} /> */}
-            {/* <Route path="/terms" element={<Terms />} /> */}
-          </Routes>
-        </main>
-        {/* <Footer /> */}
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public */}
+          <Route path="/"      element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+
+          {/* Student-only routes */}
+          <Route element={<PrivateRoute requiredGroup="student" />}>
+            <Route path="/dashboard/student" element={<StudentDashboard />} />
+          </Route>
+
+          {/* Staff-only routes (teacher / teacher-admin / admin) */}
+          <Route element={<PrivateRoute requiredGroup="staff" />}>
+            <Route path="/dashboard/staff" element={<TeacherDashboard />} />
+          </Route>
+
+          {/* Catch-all */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

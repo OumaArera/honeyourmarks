@@ -8,10 +8,10 @@ import GroupsTab from "../components/teachers/GroupsTab";
 import StudentsTab from "../components/teachers/StudentsTab";
 import ExamsTab from "../components/teachers/ExamsTab";
 import ClassesTab from "../components/teachers/ClassesTab";
-import MarkingTab from "../components/teachers/MarkingTab";
 import { useAuth } from "../hooks/useAuth";
 import NotesTab from "../components/teachers/NotesTab";
 import ProfileTab from "../components/teachers/Profile";
+import PricingTab from "../components/teachers/Pricing";
 
 
 export default function TeacherDashboard() {
@@ -33,7 +33,7 @@ export default function TeacherDashboard() {
     notes: NotesTab,
     exams: ExamsTab,
     classes: ClassesTab,
-    pricing: ClassesTab,
+    pricing: PricingTab,
     profile: ProfileTab,
   };
 

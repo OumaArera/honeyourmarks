@@ -15,6 +15,8 @@ export const GRADE_OPTIONS = [
   { value: "grade_10", label: "Grade 10" },
   { value: "grade_11", label: "Grade 11" },
   { value: "grade_12", label: "Grade 12" },
+  { value: "form_3", label: "Form 3" },
+  { value: "form_4", label: "Form 4" },
 ];
 
 export const LEVEL_OPTIONS = [

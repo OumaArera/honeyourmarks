@@ -1,5 +1,5 @@
 import React from "react";
-import { TEACHER, NAV_ITEMS } from "../../data/teacher.dashboard.data";
+import { NAV_ITEMS } from "../../data/teacher.dashboard.data";
 
 
 export default function Sidebar({ active, onNav, collapsed, onLogout }) {
@@ -38,24 +38,7 @@ export default function Sidebar({ active, onNav, collapsed, onLogout }) {
         })}
       </nav>
 
-      {/* Teacher card */}
-      {!collapsed && (
-        <div className="mx-3 mt-4 p-4 rounded-2xl" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center text-lg shrink-0"
-              style={{ background: "rgba(13,148,136,0.2)" }}>{TEACHER.avatar}</div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-xs font-black truncate">{TEACHER.name}</p>
-              <p className="text-white/30 text-[10px] truncate">{TEACHER.school}</p>
-            </div>
-          </div>
-          <button onClick={onLogout}
-            className="mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold transition-all duration-200 hover:opacity-70"
-            style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.4)", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <span>↩</span> Logout
-          </button>
-        </div>
-      )}
+      
       {collapsed && (
         <button onClick={onLogout} className="mt-4 p-3 rounded-xl mx-2 transition-all duration-200 hover:opacity-70"
           style={{ color: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.07)" }}>↩</button>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { createData } from "../../api/api.service";
 import Field from "../common/NotesUI";
 import WordCount from "../common/WordCount";
-import ImageAdvisory from "../common/ImageAdvisory";
 import PublishButton from "../common/PublishButton";
 import RichEditor from "../notes/RichEditor";
 import {
@@ -190,7 +189,7 @@ export default function ExamCreateView({
         {/* Video Link */}
         <Field label="Video Link" hint="Optional — YouTube, Vimeo, etc.">
           <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">🎥</span>
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></span>
             <input
               type="url"
               value={form.video_link}

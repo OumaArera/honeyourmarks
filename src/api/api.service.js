@@ -36,6 +36,27 @@ export const updateData = async (endpoint, updatedData, isTokenRequired = true) 
     }
 };
 
+export const patchData = async (endpoint, updatedData, isTokenRequired = true) => {
+    const completeURL = `${BASE_URL}/${endpoint}`;
+    try {
+        const response = await fetch(completeURL, {
+            method: "PATCH",
+            headers: buildHeaders(isTokenRequired),
+            body: JSON.stringify(updatedData),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            return { error: data?.error || "Failed to update data" };
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error updating data:", error);
+        return { error: "An unexpected error occurred while updating." };
+    }
+};
+
 export const createFormData = async (endpoint, newData) => {
     const completeURL = `${BASE_URL}/${endpoint}`;
 
@@ -54,6 +75,27 @@ export const createFormData = async (endpoint, newData) => {
     } catch (error) {
         console.error("Error creating data:", error);
         return { error: "An unexpected error occurred while creating." };
+    }
+};
+
+export const patchFormData = async (endpoint, newData) => {
+    const completeURL = `${BASE_URL}/${endpoint}`;
+
+    try {
+        const response = await fetch(completeURL, {
+            method: "PATCH",
+            body: newData,
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            return { error: data?.error || data?.errors || "Failed to update data" };
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error updating data:", error);
+        return { error: "An unexpected error occurred while updating." };
     }
 };
 

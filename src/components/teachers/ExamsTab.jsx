@@ -5,12 +5,13 @@ import Toast from "../common/Toast";
 import ExamCreateView from "../exams/ExamCreateView";
 import ExamBrowseView from "../exams/ExamBrowseView";
 import ExamStatsView from "../exams/ExamStatsView";
+import ExamSubmissionsView from "../exams/ExamSubmission";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ── Constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-const VIEWS = { CREATE: "create", BROWSE: "browse", STATS: "stats" };
+const VIEWS = { CREATE: "create", BROWSE: "browse", STATS: "stats", SUBMISSION: "submissions" };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ── ViewTab
@@ -102,9 +103,10 @@ export default function ExamsTab() {
           </div>
 
           <div className="flex gap-2 flex-wrap">
-            <ViewTab icon="✍️" label="Create Exam"   active={view === VIEWS.CREATE} onClick={() => setView(VIEWS.CREATE)} />
-            <ViewTab icon="🔍" label="Browse Exams"  active={view === VIEWS.BROWSE} onClick={() => setView(VIEWS.BROWSE)} />
-            <ViewTab icon="📊" label="Exam Stats"    active={view === VIEWS.STATS}  onClick={() => setView(VIEWS.STATS)} />
+            <ViewTab icon="✍️" label="Create Exam"        active={view === VIEWS.CREATE}     onClick={() => setView(VIEWS.CREATE)} />
+            <ViewTab icon="🔍" label="Browse Exams"       active={view === VIEWS.BROWSE}     onClick={() => setView(VIEWS.BROWSE)} />
+            <ViewTab icon="📊" label="Exam Stats"         active={view === VIEWS.STATS}      onClick={() => setView(VIEWS.STATS)} />
+            <ViewTab icon="📋" label="Exam Submissions"   active={view === VIEWS.SUBMISSION} onClick={() => setView(VIEWS.SUBMISSION)} />
           </div>
         </div>
 
@@ -123,6 +125,8 @@ export default function ExamsTab() {
         )}
 
         {view === VIEWS.STATS && <ExamStatsView />}
+
+        {view === VIEWS.SUBMISSION && <ExamSubmissionsView />}
       </div>
     </>
   );

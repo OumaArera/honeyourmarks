@@ -87,7 +87,7 @@ export default function ExamCreateView({
 
   return (
     <div className="space-y-8">
-      <ImageAdvisory />
+      {/* <ImageAdvisory /> */}
 
       {/* ── Core fields ── */}
       <div

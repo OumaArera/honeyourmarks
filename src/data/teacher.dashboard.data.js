@@ -69,7 +69,6 @@ export const NAV_ITEMS = [
   { key: "notes",  icon: "◧",  label: "Notes" },
   { key: "exams",      icon: "◈",  label: "Exams" },
   { key: "classes",    icon: "◎",  label: "Classes" },
-  { key: "marking",    icon: "◫",  label: "Marking" },
   { key: "pricing", icon: "💳", label: "Pricing" },
   { key: "profile", icon: "⚙️", label: "Profile" },
 ];

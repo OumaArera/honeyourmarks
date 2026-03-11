@@ -1,19 +1,25 @@
 import { useState } from "react";
-import {  NAV_ITEMS } from "../../data/teacher.dashboard.data";
+import { NAV_ITEMS } from "../../data/teacher.dashboard.data";
 
+const VISIBLE = 5; 
 
 export default function BottomNav({ active, onNav, onLogout }) {
   const [showMore, setShowMore] = useState(false);
 
-  const allPrimary = NAV_ITEMS.slice(0, 5);
-  const allMore = NAV_ITEMS.slice(5);
+  const allPrimary = NAV_ITEMS.slice(0, VISIBLE);
+  const allMore    = NAV_ITEMS.slice(VISIBLE);
 
-  // If active tab is in "more", swap it into the last primary slot so the bar always reflects current location
   const activeIsInMore = allMore.some(i => i.key === active);
-  const primary = activeIsInMore
-    ? [...allPrimary.slice(0, 4), NAV_ITEMS.find(i => i.key === active)]
-    : allPrimary;
-  const more = NAV_ITEMS.filter(i => !primary.includes(i));
+
+  let primary, more;
+  if (activeIsInMore) {
+    const displaced = allPrimary[VISIBLE - 1];
+    primary = [...allPrimary.slice(0, VISIBLE - 1), NAV_ITEMS.find(i => i.key === active)];
+    more    = [displaced, ...allMore.filter(i => i.key !== active)];
+  } else {
+    primary = allPrimary;
+    more    = allMore;
+  }
 
   return (
     <>
@@ -31,7 +37,11 @@ export default function BottomNav({ active, onNav, onLogout }) {
                   key={key}
                   onClick={() => { onNav(key); setShowMore(false); }}
                   className="w-full flex items-center gap-4 px-5 py-4 transition-all"
-                  style={{ background: isActive ? "rgba(13,148,136,0.12)" : "transparent", borderBottom: "1px solid rgba(255,255,255,0.05)", color: isActive ? "#2DD4BF" : "rgba(255,255,255,0.6)" }}
+                  style={{
+                    background: isActive ? "rgba(13,148,136,0.12)" : "transparent",
+                    borderBottom: "1px solid rgba(255,255,255,0.05)",
+                    color: isActive ? "#2DD4BF" : "rgba(255,255,255,0.6)"
+                  }}
                 >
                   <span className="text-xl w-7 text-center font-black">{icon}</span>
                   <span className="font-bold text-sm">{label}</span>
@@ -40,7 +50,7 @@ export default function BottomNav({ active, onNav, onLogout }) {
               );
             })}
             <button
-              onClick={() => { onLogout(); setShowMore(false); }}
+              onClick={() => { setShowMore(false); setTimeout(() => onLogout(), 50); }}
               className="w-full flex items-center gap-4 px-5 py-4"
               style={{ color: "rgba(248,113,113,0.8)" }}
             >
@@ -71,7 +81,6 @@ export default function BottomNav({ active, onNav, onLogout }) {
           );
         })}
 
-        {/* More button — hidden when active tab was swapped into primary */}
         <button
           onClick={() => setShowMore(v => !v)}
           className="flex-1 flex flex-col items-center justify-center gap-0.5 py-3 relative"

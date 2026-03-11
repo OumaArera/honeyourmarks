@@ -11,6 +11,7 @@ import ClassesTab from "../components/teachers/ClassesTab";
 import MarkingTab from "../components/teachers/MarkingTab";
 import { useAuth } from "../hooks/useAuth";
 import NotesTab from "../components/teachers/NotesTab";
+import ProfileTab from "../components/teachers/Profile";
 
 
 export default function TeacherDashboard() {
@@ -32,9 +33,8 @@ export default function TeacherDashboard() {
     notes: NotesTab,
     exams: ExamsTab,
     classes: ClassesTab,
-    marking: MarkingTab,
     pricing: ClassesTab,
-    profile: MarkingTab,
+    profile: ProfileTab,
   };
 
   const TabContent = TABS[activeTab] || OverviewTab;

@@ -314,9 +314,9 @@ function CreateView({ subjects, loadingSubs, teacherId, onSuccess, onError }) {
   };
 
   return (
-    <div className="space-y-8">
-      <ImageAdvisory />
-      <div className="rounded-2xl space-y-6 p-6"
+    <div className="space-y-8 w-full">
+      {/* <ImageAdvisory /> */}
+      <div className="rounded-2xl space-y-6 p-4 sm:p-6"
         style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <Field label="Title" required>
@@ -355,7 +355,7 @@ function CreateView({ subjects, loadingSubs, teacherId, onSuccess, onError }) {
           </div>
         </Field>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2 -mx-50"> 
         <div className="flex items-center gap-2">
           <span className="text-xs font-black tracking-widest uppercase"
             style={{ color: "rgba(255,255,255,0.45)" }}>Note Content</span>
@@ -452,7 +452,7 @@ export default function NotesTab() {
         />
       )}
 
-      <div className="space-y-6 pb-10">
+      <div className="space-y-6 pb-10 w-full max-w-none">
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>

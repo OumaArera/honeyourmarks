@@ -27,7 +27,8 @@ const FREE_FEATURES = [
   "Browse notes previews",
   "View class schedules",
   "Explore subject topics",
-  "Access sample exercises",
+  "Access academic history",
+  
 ];
 
 const ACCESS_FLAG_LABELS = {
@@ -35,6 +36,8 @@ const ACCESS_FLAG_LABELS = {
   exercises_access:       "All exercises & solutions",
   exams_access:           "Past exams & marking schemes",
   virtual_classes_access: "Live virtual classes",
+  submit_exam_questions_attempts: "Submit Exam Questions Attempt for Marking",
+  submit_exercise_attempts: "Submit Practice Exercises Attempt for Marking",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -317,11 +320,7 @@ export default function Pricing() {
           </div>
         )}
 
-        {/* ── Footer note ── */}
-        <p className="text-center font-body text-[13px] mt-8" style={{ color: "#718096" }}>
-          All plans are manually confirmed by your teacher-admin. Duration auto-expires —{" "}
-          <strong style={{ color: "#1B2F4E" }}>no automatic renewal.</strong>
-        </p>
+        
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 import React from "react";
-import { STUDENT, NAV_ITEMS } from "../../data/dashboard.data";;
-import XpBar from "./XpBar";
-import LevelBadge from "./LevelBadge";
+import {  NAV_ITEMS } from "../../data/dashboard.data";;
+
 
 
 export default function Sidebar({ active, onNav, collapsed }) {
@@ -34,27 +33,7 @@ export default function Sidebar({ active, onNav, collapsed }) {
         })}
       </nav>
 
-      {/* Student mini card */}
-      {!collapsed && (
-        <div className="mx-3 mt-4 p-3 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-base"
-              style={{ background: "rgba(232,74,12,0.2)" }}>{STUDENT.avatar}</div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-xs font-bold truncate">{STUDENT.name}</p>
-              <p className="text-white/35 text-[10px]">{STUDENT.grade}</p>
-            </div>
-            <LevelBadge level={STUDENT.level} />
-          </div>
-          <div className="mt-2.5">
-            <XpBar current={STUDENT.xp} max={STUDENT.nextLevelXp} />
-            <div className="flex justify-between mt-1">
-              <span className="text-[9px] text-white/30">{STUDENT.xp} XP</span>
-              <span className="text-[9px] text-white/30">Lvl {STUDENT.level + 1} at {STUDENT.nextLevelXp}</span>
-            </div>
-          </div>
-        </div>
-      )}
+      
     </aside>
   );
 }

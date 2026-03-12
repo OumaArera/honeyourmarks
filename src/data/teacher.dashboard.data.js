@@ -64,6 +64,7 @@ export const PENDING_MARKS = [
 
 export const NAV_ITEMS = [
   { key: "overview",   icon: "⬡",  label: "Overview" },
+  { key: "admin",   icon: "🛡️",  label: "Admin" },
   { key: "groups",     icon: "◈",  label: "Groups" },
   { key: "students",   icon: "◉",  label: "Students" },
   { key: "notes",  icon: "◧",  label: "Notes" },

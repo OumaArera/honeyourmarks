@@ -103,7 +103,37 @@ export const PRICES = {
 };
 
 export const FOOTER_COLS = [
-  { title: "Platform", links: ["E-Library", "Live Classes", "Exercises", "Assignments"] },
-  { title: "Exams",    links: ["KCSE (Form 4)", "KCBE (Grade 12)", "KJSEA (Grade 9)", "KPSEA (Grade 6)"] },
-  { title: "Support",  links: ["For Students", "For Teachers", "FAQs", "Contact Us"] },
+  {
+    title: "Platform",
+    links: [
+      { label: "E-Library",    to: "/library"     },
+      { label: "Live Classes", to: "/classes"      },
+      { label: "Exercises",    to: "/exercises"    },
+      { label: "Assignments",  to: "/assignments"  },
+    ],
+  },
+  {
+    title: "Exams",
+    links: [
+      { label: "KCSE (Form 4)",   to: "/exams/kcse"  },
+      { label: "KCBE (Grade 12)", to: "/exams/kcbe"  },
+      { label: "KJSEA (Grade 9)", to: "/exams/kjsea" },
+      { label: "KPSEA (Grade 6)", to: "/exams/kpsea" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { label: "For Students",  to: "/support/students" },
+      { label: "For Teachers",  to: "/support/teachers" },
+      { label: "FAQs",          to: "/faqs"             },
+      { label: "Contact Us",    to: "/contact"          },
+    ],
+  },
+];
+
+export const POLICY_LINKS = [
+  { label: "Privacy Policy", to: "/privacy-policy" },
+  { label: "Terms of Use",   to: "/terms"           },
+  // { label: "Cookie Policy",  to: "/cookies"         },
 ];

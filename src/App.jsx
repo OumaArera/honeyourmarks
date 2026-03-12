@@ -6,6 +6,7 @@ import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./context/PrivateRoute";
 import StudentDashboard from './dashboards/StudentDashboard'
 import TeacherDashboard from './dashboards/StaffDashboard';
+import OurCommitment from './pages/OurCommitment';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           {/* Public */}
           <Route path="/"      element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/privacy-policy" element={<OurCommitment />} />
 
           {/* Student-only routes */}
           <Route element={<PrivateRoute requiredGroup="student" />}>

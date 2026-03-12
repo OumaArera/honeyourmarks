@@ -1,1 +1,134 @@
 @import "tailwindcss";
+
+
+/*
+  .prose-note
+  ──────────────────────────────────────────────────────────────────────────────
+  Scoped styles for Quill-generated HTML rendered inside NoteDetail and
+  ExerciseDetail. Add this block to your global stylesheet (e.g. index.css).
+
+  Responsiveness strategy:
+    • Indents use clamp() so deep levels never overflow a narrow viewport
+    • Font size scales slightly between mobile and desktop via clamp()
+    • Long unbreakable strings (URLs, code) are soft-wrapped with overflow-wrap
+    • Tables (if Quill ever emits them) get horizontal scroll via overflow-x: auto
+*/
+
+/*
+  ── Viewport overflow guard ────────────────────────────────────────────────────
+  Tailwind's base reset (preflight) can set overflow: clip on <html> in some
+  configurations, which creates a new stacking context and traps position:fixed
+  children — they end up clipped inside the page rather than covering the
+  viewport.  Explicitly restoring overflow: visible here ensures fixed modals,
+  bottom-sheets, and toasts always escape to the true viewport.
+
+  The body scroll-lock (overflow: hidden) applied programmatically when a modal
+  is open is intentional and is NOT overridden here — JS sets it on <body>
+  directly and the rule below only targets <html>.
+*/
+html {
+  overflow: visible;           /* never clip fixed descendants         */
+  /* Smooth scrolling for anchor links — does not affect fixed modals  */
+  scroll-behavior: smooth;
+}
+
+/*
+  Prevent the page from scrolling behind open modals.
+  The .modal-open class is toggled by JS (see NotesTab body scroll-lock effect).
+  Using a class is safer than direct style manipulation inside useEffect because
+  it survives React strict-mode double-invocation without leaving stale styles.
+*/
+body.modal-open {
+  overflow: hidden;
+}
+
+
+.prose-note {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: clamp(0.8125rem, 2.2vw, 0.9375rem); /* 13px → 15px */
+  line-height: 1.75;
+  overflow-wrap: break-word;   /* soft-wraps long unbreakable tokens  */
+  word-break: break-word;      /* catches CJK / long tokens           */
+  min-width: 0;                /* lets flex/grid children shrink      */
+}
+
+/* ── Block spacing ── */
+.prose-note p,
+.prose-note ol,
+.prose-note ul {
+  margin-bottom: 0.75rem;
+}
+.prose-note p:last-child,
+.prose-note ol:last-child,
+.prose-note ul:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Inline emphasis ── */
+.prose-note strong { color: rgba(255, 255, 255, 0.95); font-weight: 700; }
+.prose-note em     { font-style: italic; color: rgba(255, 255, 255, 0.65); }
+.prose-note u      { text-decoration: underline; }
+
+/* ── Lists ── */
+.prose-note ol,
+.prose-note ul {
+  padding-left: clamp(1rem, 4vw, 1.5rem);
+}
+.prose-note ol { list-style-type: decimal; }
+.prose-note ul { list-style-type: disc; }
+
+/* Nested lists (Quill: ol > li > ol) */
+.prose-note ol ol     { list-style-type: lower-alpha; padding-left: clamp(1rem, 4vw, 1.5rem); margin-top: 0.25rem; }
+.prose-note ol ol ol  { list-style-type: lower-roman; }
+
+.prose-note li               { margin-bottom: 0.35rem; }
+.prose-note li:last-child    { margin-bottom: 0; }
+
+/* ── Quill indent classes (ql-indent-1 … ql-indent-8)
+       clamp(min, preferred-vw, max)
+       min  = enough visual hierarchy on a 320 px screen
+       pref = scales naturally with viewport width
+       max  = original desktop value                        ── */
+.prose-note .ql-indent-1 { padding-left: clamp(1.25rem,  6vw,  3rem); }
+.prose-note .ql-indent-2 { padding-left: clamp(2rem,     9vw,  6rem); }
+.prose-note .ql-indent-3 { padding-left: clamp(2.5rem,  12vw,  9rem); }
+.prose-note .ql-indent-4 { padding-left: clamp(3rem,    15vw, 12rem); }
+.prose-note .ql-indent-5 { padding-left: clamp(3.5rem,  18vw, 15rem); }
+.prose-note .ql-indent-6 { padding-left: clamp(4rem,    21vw, 18rem); }
+.prose-note .ql-indent-7 { padding-left: clamp(4.5rem,  24vw, 21rem); }
+.prose-note .ql-indent-8 { padding-left: clamp(5rem,    27vw, 24rem); }
+
+/* ── Tables (defensive — Quill can emit them) ── */
+.prose-note table {
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.prose-note th,
+.prose-note td {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+/* ── Images (Quill can embed them) ── */
+.prose-note img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+/* ── Code / pre blocks ── */
+.prose-note pre,
+.prose-note code {
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 0.8125rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.prose-note pre  { padding: 0.75rem 1rem; }
+.prose-note code { padding: 0.1em 0.35em; }

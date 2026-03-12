@@ -18,13 +18,16 @@ const ACCESS_FLAGS = [
   { key: "exercises_access",       icon: "✏️", label: "Exercises"       },
   { key: "exams_access",           icon: "📝", label: "Exams"           },
   { key: "virtual_classes_access", icon: "📡", label: "Virtual Classes" },
+  { key: "submit_exam_questions_attempts", icon: "📝", label: "Submit Exams Attempt for Marking" },
+  { key: "submit_exercise_attempts", icon: "✏️", label: "Submit Practice Exercise for Marking" },
 ];
 const EMPTY_FORM = {
   name: "", tier: "full", duration: "monthly", price: "",
   currency: "KES", description: "",
   notes_access: true, exercises_access: true,
   exams_access: true, virtual_classes_access: true,
-  active: true,
+  active: true, submit_exam_questions_attempts: true,
+  submit_exercise_attempts:true
 };
 const DONUT_COLORS = ["#10B981","#3B82F6","#F59E0B","#A855F7","#EF4444","#EC4899","#14B8A6"];
 
@@ -49,7 +52,7 @@ function FieldLabel({ children, required }) {
 function Toggle({ checked, onChange, label }) {
   return (
     <button onClick={() => onChange(!checked)} type="button" className="flex items-center gap-2.5 w-full text-left">
-      <div className="w-8 h-[18px] rounded-full relative shrink-0 transition-colors"
+      <div className="w-8 h-4.5 rounded-full relative shrink-0 transition-colors"
         style={{ background: checked ? "#10B981" : "rgba(255,255,255,0.15)" }}>
         <div className="absolute top-0.5 w-3.5 h-3.5 rounded-full bg-white shadow transition-all"
           style={{ left: checked ? "calc(100% - 16px)" : "2px" }} />
@@ -447,7 +450,7 @@ function PlanFormModal({ plan, onClose, onSaved }) {
   const setField = (key)      => (e) => set(key, e.target.value);
 
   const handleTierChange = (val) => {
-    if (val === "partial") setForm((f) => ({ ...f, tier: val, virtual_classes_access: false }));
+    if (val === "partial") setForm((f) => ({ ...f, tier: val, submit_exam_questions_attempts: false, submit_exercise_attempts: false }));
     else setForm((f) => ({ ...f, tier: val, notes_access: true, exercises_access: true, exams_access: true, virtual_classes_access: true }));
   };
 
@@ -607,7 +610,7 @@ function PlanRow({ plan, onEdit, isLast }) {
           : { background: "rgba(245,158,11,0.08)", color: "#FCD34D", border: "1px solid rgba(245,158,11,0.18)" }}>
         {plan.tier === "full" ? "Full" : "Partial"}
       </span>
-      <div className="text-right shrink-0 min-w-[88px]">
+      <div className="text-right shrink-0 min-w-22">
         <p className="font-black text-white text-sm leading-none">
           {plan.currency} {parseFloat(plan.price).toLocaleString("en-KE", { minimumFractionDigits: 2 })}
         </p>
@@ -634,7 +637,7 @@ function Toast({ message, onDismiss }) {
   }, [message, onDismiss]);
   if (!message) return null;
   return (
-    <div className="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 z-[9999] px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold max-w-sm w-full"
+    <div className="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 z-9999 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold max-w-sm w-full"
       style={{ background: "#071a10", border: "1px solid rgba(16,185,129,0.4)", color: "#34D399" }}>
       <span>✅</span>
       <span className="flex-1">{message}</span>

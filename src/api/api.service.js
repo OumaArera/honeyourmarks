@@ -59,16 +59,18 @@ export const patchData = async (endpoint, updatedData, isTokenRequired = true) =
 
 export const createFormData = async (endpoint, newData) => {
     const completeURL = `${BASE_URL}/${endpoint}`;
+    const token = localStorage.getItem("hym_access");
 
     try {
         const response = await fetch(completeURL, {
             method: "POST",
+            headers: {Authorization: `Bearer ${token}`},
             body: newData,
         });
 
         const data = await response.json();
         if (!response.ok) {
-            return { error: data?.error || data?.errors || "Failed to create data" };
+            return { error: data?.error || data?.errors || data || "Failed to create data" };
         }
 
         return data;

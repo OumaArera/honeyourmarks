@@ -2,25 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { getData } from "../../api/api.service";
 import { getAuthorId } from "../../utils/notes.utils";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ── Helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
-function fmtDate(d) {
-  if (!d) return "—";
-  return new Date(d).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-
-function greetingByHour() {
-  const h = new Date().getHours();
-  if (h < 12) return "Good morning";
-  if (h < 17) return "Good afternoon";
-  return "Good evening";
-}
 
 function getInitials(first = "", last = "") {
   return `${first[0] ?? ""}${last[0] ?? ""}`.toUpperCase();
@@ -454,9 +435,6 @@ export default function OverviewTab({ onNav }) {
     })();
   }, []);
 
-  // ── Derived
-  const fullName    = teacher ? `${teacher.first_name} ${teacher.last_name}` : "";
-  const initials    = getInitials(teacher?.first_name, teacher?.last_name);
   const avgScore    = stats?.average_exam_score    != null ? fmtPct(stats.average_exam_score) : "—";
   const overallPct  = stats?.overall_exam_percentage ?? null;
   const pendingSubs = stats != null ? stats.total_exam_submissions - stats.total_exams_marked : null;

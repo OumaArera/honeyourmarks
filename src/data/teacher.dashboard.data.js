@@ -70,6 +70,7 @@ export const NAV_ITEMS = [
   { key: "notes",  icon: "◧",  label: "Notes" },
   { key: "exams",      icon: "◈",  label: "Exams" },
   { key: "classes",    icon: "◎",  label: "Classes" },
+  { key: "challenges", icon: "🏆",  label: "Challenges" },
   { key: "pricing", icon: "💳", label: "Pricing" },
   { key: "profile", icon: "⚙️", label: "Profile" },
 ];

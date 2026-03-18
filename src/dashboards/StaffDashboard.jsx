@@ -13,6 +13,7 @@ import NotesTab from "../components/teachers/NotesTab";
 import ProfileTab from "../components/teachers/Profile";
 import PricingTab from "../components/teachers/Pricing";
 import AdminTab from "../components/teachers/Admin";
+import ChallengesTab from "../components/challenges/ChallengesTab";
 
 
 export default function TeacherDashboard() {
@@ -37,6 +38,7 @@ export default function TeacherDashboard() {
     pricing: PricingTab,
     profile: ProfileTab,
     admin: AdminTab,
+    challenges: ChallengesTab,
   };
 
   const TabContent = TABS[activeTab] || OverviewTab;

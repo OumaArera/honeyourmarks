@@ -72,7 +72,8 @@ export const PRICING = {
 export const NAV_ITEMS = [
   { key: "home",    icon: "🏠", label: "Home" },
   { key: "notes",   icon: "📝", label: "Notes" },
-  { key: "exams",   icon: "🏆", label: "Exams" },
+  { key: "challenges",   icon: "⚔️", label: "Challenges" },
+  { key: "exams",   icon: "🎓", label: "Exams" },
   { key: "classes", icon: "📡", label: "Classes" },
   { key: "groups",  icon: "👥", label: "Groups" },
   { key: "pricing", icon: "💳", label: "My Plans" },

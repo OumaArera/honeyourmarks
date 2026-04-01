@@ -12,7 +12,8 @@ import { getData } from "../api/api.service";
 import { getUserId } from "../utils/notes.utils";
 import NotesTab from "../components/students/notes/NotesTab";
 import ExamsTab from "../components/students/exams/ExamsTab";
-import ProfileTab from '../components/students/ProfileTab'
+import ProfileTab from '../components/students/ProfileTab';
+import StudentChallengesTab from "../components/challenges/StudentChallengeTab";
 
 export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState("home");
@@ -26,7 +27,6 @@ export default function StudentDashboard() {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  // Step 1: fetch student profile
   useEffect(() => {
     const fetchStudent = async () => {
       try {
@@ -40,7 +40,6 @@ export default function StudentDashboard() {
     fetchStudent();
   }, []);
 
-  // Step 2: once student ID is known, fetch all dashboard data in parallel
   useEffect(() => {
     if (!student?.id) return;
 
@@ -54,7 +53,6 @@ export default function StudentDashboard() {
         ]);
         setExamStats(exams);
         setExerciseStats(exercises);
-        // Take the first active subscription (there should only be one)
         setSubscription(subs?.results?.[0] ?? null);
       } catch (err) {
         console.error("Failed to fetch dashboard data:", err);
@@ -79,12 +77,13 @@ export default function StudentDashboard() {
     groups: GroupsTab,
     pricing: PricingTab,
     profile: ProfileTab,
+    challenges: StudentChallengesTab,
   };
   const TabContent = TABS[activeTab] || HomeTab;
 
   return (
     <div
-      className="min-h-screen flex"
+      className="min-h-screen flex overflow-x-hidden"
       style={{ background: "#0A1018", fontFamily: "'Segoe UI', system-ui, sans-serif" }}
     >
       <div
@@ -96,7 +95,7 @@ export default function StudentDashboard() {
       </div>
 
       <div
-        className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${
+        className={`flex-1 flex flex-col min-h-screen overflow-x-hidden transition-all duration-300 ${
           sidebarCollapsed ? "lg:ml-20" : "lg:ml-60"
         }`}
       >
@@ -106,8 +105,8 @@ export default function StudentDashboard() {
           onToggleSidebar={() => setSidebarCollapsed(v => !v)}
           onLogout={handleLogout}
         />
-        <main className="flex-1 px-4 sm:px-6 py-6 pb-24 lg:pb-8 overflow-y-auto">
-          <div className="max-w-2xl mx-auto">
+        <main className="flex-1 px-4 sm:px-6 py-6 pb-24 lg:pb-8 overflow-x-hidden overflow-y-auto">
+          <div className="max-w-2xl mx-auto w-full">
             <TabContent
               student={student}
               examStats={examStats}
